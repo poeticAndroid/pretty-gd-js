@@ -1,16 +1,31 @@
 {
   "name": "prettify-gdscript",
   "version": "0.0.1",
-  "description": "A JavaScript library that formats GDScript code.",
+  "description": "A library that makes GDScript code look pretty.",
   "main": "index.js",
+  "bin": {
+    "txt-tracker": "index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
+    "cli",
     "gdscript",
     "format",
     "prettify"
   ],
   "author": "poeticAndroid",
-  "license": "ISC"
+  "license": "ISC",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poeticAndroid/prettify-gdscript.git"
+  },
+  "bugs": {
+    "url": "https://github.com/poeticAndroid/prettify-gdscript/issues"
+  },
+  "homepage": "https://github.com/poeticAndroid/prettify-gdscript#readme"
 }
