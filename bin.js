@@ -12,17 +12,15 @@ function init() {
     process.stdout.write(pretty.prettify(input))
     process.stdout.write(pretty.eol || "\n")
   } else {
-    let to = setInterval(e => {
-      if (input || process.stdin.readable) {
-        input += process.stdin.read() || ""
-        if (process.stdin.readableEnded) input = input.trimEnd() + (pretty.eol || "\n")
-        if (input.includes("\n")) {
-          let line = input.slice(0, input.indexOf("\n") + 1)
-          input = input.slice(line.length)
-          process.stdout.write(pretty.prettify(line, pretty.isInsideString))
-          process.stdout.write(pretty.eol || "\n")
-        }
-      } else clearInterval(to)
+    process.stdin.on("readable", e => {
+      let chunk = ""
+      do {
+        input += chunk
+      } while (chunk = process.stdin.read())
+    })
+    process.stdin.on("end", e => {
+      process.stdout.write(pretty.prettify(input))
+      process.stdout.write(pretty.eol || "\n")
     })
   }
 }

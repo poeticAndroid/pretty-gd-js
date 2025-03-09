@@ -2,8 +2,8 @@ const tokenize = require("./tokenizer")
 
 const prettifier = {
   isInsideString: false,
-  inputIndent: null,
-  outputIndent: "\t",
+  _indent: null,
+  indent: "\t",
   eol: "",
   prettify(input, startInsideString = false) {
     if (!prettifier.eol) {
@@ -23,12 +23,12 @@ const prettifier = {
         continue
       }
       let tokens = tokenize(line)
-      if (!prettifier.inputIndent) prettifier.inputIndent = tokens[0]
-      if (!prettifier.outputIndent) prettifier.outputIndent = tokens[0]
-      if (prettifier.inputIndent) indentLvl = tokens[0].length / prettifier.inputIndent.length
+      if (!prettifier._indent) prettifier._indent = tokens[0]
+      if (!prettifier.indent) prettifier.indent = tokens[0]
+      if (prettifier._indent) indentLvl = tokens[0].length / prettifier._indent.length
       let thisIndent = ""
       for (let i = 0; i < indentLvl; i++) {
-        thisIndent += prettifier.outputIndent
+        thisIndent += prettifier.indent
       }
       tokens.shift()
       let newLine = (thisIndent + tokens.join("")).trimEnd()
