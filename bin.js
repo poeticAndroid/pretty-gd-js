@@ -28,13 +28,11 @@ function init() {
   if (opts.tabs) {
     pretty.indent = "\t"
   }
-  for (file of process.argv) {
-    if (file.slice(-3) == ".gd") {
-      input = "" + fs.readFileSync(file)
-      output += pretty.prettify(input)
-      output += pretty.eol || "\n"
-      fs.writeFileSync(file, output)
-    }
+  for (file of program.args) {
+    input = "" + fs.readFileSync(file)
+    output += pretty.prettify(input)
+    output += pretty.eol || "\n"
+    fs.writeFileSync(file, output)
   }
 }
 
