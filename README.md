@@ -55,7 +55,7 @@ none yet..
 ### 1.11.0
 
  - The command line tool now actually works
- - Parse intentation based on visual space, rather than character count
+ - Parse indentation based on visual space, rather than character count
 
 ### 1.10.0
 
