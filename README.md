@@ -61,13 +61,13 @@ none yet..
 
 ## Release Notes
 
-### 1.11.1
+### 1.11.2
 
+ - The command line tool now actually works
  - Command line options
 
 ### 1.11.0
 
- - The command line tool now actually works
  - Parse indentation based on visual space, rather than character count
 
 ### 1.10.0

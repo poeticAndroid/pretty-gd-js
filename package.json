@@ -1,10 +1,10 @@
 {
   "name": "prettify-gdscript",
-  "version": "1.11.1",
+  "version": "1.11.2",
   "description": "A library that makes GDScript code look pretty.",
   "main": "index.js",
   "bin": {
-    "txt-tracker": "index.js"
+    "prettify-gdscript": "bin.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
