@@ -1,15 +1,14 @@
 const tokenize = require("./tokenizer")
 
 let m = {
+  prettify,
   isInsideString: false,
-  _indent: null,
-  indent: null,
   eol: null,
-  prettify
+  indent: null,
+  tabSize: 4,
 }
 
 function prettify(input, startInsideString = false) {
-  if (!m.indent) m._indent = null
   if (!m.eol) {
     if (input.includes("\r")) m.eol = "\r\n"
     else if (input.includes("\n")) m.eol = "\n"
@@ -30,8 +29,8 @@ function prettify(input, startInsideString = false) {
     let tokens = tokenize(line)
     if (!m.indent) m.indent = tokens[0]
     if (m.indent.includes("\t")) m.indent = "\t"
-    if (!m._indent) m._indent = spaceSize(tokens[0])
-    if (m._indent) indentLvl = Math.floor(spaceSize(tokens[0], m._indent) / m._indent)
+    if (m.indent) m.tabSize = spaceSize(m.indent)
+    if (m.tabSize) indentLvl = Math.ceil(spaceSize(tokens[0]) / m.tabSize)
     let thisIndent = ""
     for (let i = 0; i < indentLvl; i++) {
       thisIndent += m.indent
@@ -45,7 +44,8 @@ function prettify(input, startInsideString = false) {
   return output.trimEnd()
 }
 
-function spaceSize(whitespace, tabSize = 4) {
+function spaceSize(whitespace) {
+  if (!whitespace) return 0
   let sum = 0
   for (let char of whitespace) {
     switch (char) {
@@ -55,7 +55,7 @@ function spaceSize(whitespace, tabSize = 4) {
         break
 
       case "\t":
-        do { sum++ } while (sum % tabSize)
+        do { sum++ } while (sum % (m.tabSize || 4))
         break
 
       default:
