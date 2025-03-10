@@ -30,7 +30,7 @@ function init() {
   }
   for (file of program.args) {
     input = "" + fs.readFileSync(file)
-    output += pretty.prettify(input)
+    output = pretty.prettify(input)
     output += pretty.eol || "\n"
     fs.writeFileSync(file, output)
   }

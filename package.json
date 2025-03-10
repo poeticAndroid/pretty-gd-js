@@ -1,6 +1,6 @@
 {
   "name": "prettify-gdscript",
-  "version": "1.11.2",
+  "version": "1.11.3",
   "description": "A library that makes GDScript code look pretty.",
   "main": "index.js",
   "bin": {
