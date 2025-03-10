@@ -1,4 +1,4 @@
-# Prettify GDScript
+# pretty.gd for JavaScript
 
 ![pretty godot](./images/pretty.png)
 
@@ -13,10 +13,10 @@ None!
 ### Command line
 
 ```
-$ npm install -g prettify-gdscript
+$ npm install -g pretty-gd-js
 
-$ prettify-gdscript --help
-Usage: prettify-gdscript [options] <files...>
+$ pretty.gd --help
+Usage: pretty-gd-js [options] <files...>
 
 Options:
   --lf             Unix-type line endings
@@ -45,7 +45,7 @@ If you want to auto-detect for each call, remember to reset these properties to 
 
 ```js
 const fs = require("node:fs"),
-  pretty = require("prettify-gdscript")
+  pretty = require("pretty-gd-js")
 
 let input = "", output = ""
 let file = "my_script.gd"

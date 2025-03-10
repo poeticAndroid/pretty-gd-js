@@ -1,10 +1,10 @@
 {
-  "name": "prettify-gdscript",
+  "name": "pretty-gd-js",
   "version": "1.11.3",
   "description": "A library that makes GDScript code look pretty.",
   "main": "index.js",
   "bin": {
-    "prettify-gdscript": "bin.js"
+    "pretty.gd": "bin.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,12 +25,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/poeticAndroid/prettify-gdscript.git"
+    "url": "git+https://github.com/poeticAndroid/pretty-gd-js.git"
   },
   "bugs": {
-    "url": "https://github.com/poeticAndroid/prettify-gdscript/issues"
+    "url": "https://github.com/poeticAndroid/pretty-gd-js/issues"
   },
-  "homepage": "https://github.com/poeticAndroid/prettify-gdscript#readme",
+  "homepage": "https://github.com/poeticAndroid/pretty-gd-js#readme",
   "dependencies": {
     "commander": "^13.1.0"
   }

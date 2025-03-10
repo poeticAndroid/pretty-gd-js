@@ -3,7 +3,7 @@
 const fs = require("node:fs"),
   pretty = require("./index"), commander = require("commander")
 
-const program = new commander.Command("prettify-gdscript")
+const program = new commander.Command("pretty-gd-js")
 program
   .option("--lf", "Unix-type line endings")
   .option("--crlf", "Dos-type line endings")
