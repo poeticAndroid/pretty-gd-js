@@ -61,7 +61,7 @@ none yet..
 
 ## Release Notes
 
-### 1.11.2
+### 1.11.3
 
  - The command line tool now actually works
  - Command line options
