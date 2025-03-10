@@ -5,7 +5,7 @@ const fs = require("node:fs"),
 
 function init() {
   let input = "", output = ""
-  for (file in process.argv) {
+  for (file of process.argv) {
     if (file.slice(-3) == ".gd") {
       input = "" + fs.readFileSync(file)
       output += pretty.prettify(input)
