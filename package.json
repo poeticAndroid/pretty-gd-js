@@ -1,6 +1,6 @@
 {
   "name": "prettify-gdscript",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "description": "A library that makes GDScript code look pretty.",
   "main": "index.js",
   "bin": {
@@ -30,5 +30,8 @@
   "bugs": {
     "url": "https://github.com/poeticAndroid/prettify-gdscript/issues"
   },
-  "homepage": "https://github.com/poeticAndroid/prettify-gdscript#readme"
+  "homepage": "https://github.com/poeticAndroid/prettify-gdscript#readme",
+  "dependencies": {
+    "commander": "^13.1.0"
+  }
 }

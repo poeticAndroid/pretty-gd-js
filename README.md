@@ -14,7 +14,16 @@ None!
 
 ```
 $ npm install -g prettify-gdscript
-$ prettify-gdscript *.gd
+
+$ prettify-gdscript --help
+Usage: prettify-gdscript [options] <files...>
+
+Options:
+  --lf             Unix-type line endings
+  --crlf           Dos-type line endings
+  --spaces <size>  Space-based indentation
+  --tabs           Tab-based indentation
+  -h, --help       display help for command
 ```
 
 ### JavaScript API
@@ -51,6 +60,10 @@ fs.writeFileSync(file, output)
 none yet..
 
 ## Release Notes
+
+### 1.11.1
+
+ - Command line options
 
 ### 1.11.0
 
