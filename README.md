@@ -19,26 +19,23 @@ $ pretty.gd --help
 Usage: pretty-gd-js [options] <files...>
 
 Options:
-  --lf             Unix-type line endings
-  --crlf           Dos-type line endings
-  --spaces <size>  Space-based indentation
-  --tabs           Tab-based indentation
-  -h, --help       display help for command
+  -s, --spaces <size>  space-based indentation
+  -t, --tabs           tab-based indentation
+  -h, --help           display help for command
 ```
 
 ### JavaScript API
 
   - `prettify(input: string, startInsideString: bool = false): string`
-    - `input: string` - The string of GDScript to make pretty.
-    - `startInsideString: bool` - if `true`, assume `input` is starting inside a `"""string"""`. Default is `false`.
-  - `isInsideString: bool` - `true` if last operation ended inside a `"""string"""`.
-  - `eol: string` - line ending. Default is `null` for auto-detect.
-  - `indent: string` - indentation string. Default is `null` for auto-detect.
-  - `tabSize: number` - Tab size. This will be overwritten if `indent` is set or detected to be space-based. Default is `4`.
+    - `input: string` // The string of GDScript to make pretty.
+    - `startInsideString: bool` // if `true`, assume `input` is starting inside a `"""string"""`. Default is `false`.
+  - `isInsideString: bool` // This is `true` if last operation ended inside a `"""string"""`.
+  - `indent: string` // Indentation string. Default is `null` for auto-detect.
+  - `tabSize: number` // Tab size. This will be overwritten if `indent` is set or detected to be space-based. Default is `4`.
 
 To parse a document line by line, remember to feed `isInsideString` back into the `prettify()` call as the second parameter.
 
-Keep in mind that `eol`, `indent` and `tabSize` will be preserved between calls to `prettify()`.
+Keep in mind that `indent` and `tabSize` will be preserved between calls to `prettify()`.
 If you want to auto-detect for each call, remember to reset these properties to `null`.
 
 #### Example
@@ -47,12 +44,14 @@ If you want to auto-detect for each call, remember to reset these properties to 
 const fs = require("node:fs"),
   pretty = require("pretty-gd-js")
 
-let input = "", output = ""
+// configure indentation
+pretty.indent = "\t"
+pretty.tabSize = 4
+
 let file = "my_script.gd"
-input = "" + fs.readFileSync(file)
-output += pretty.prettify(input) // <- This is the main function
-output += pretty.eol || "\n"
-fs.writeFileSync(file, output)
+let input = fs.readFileSync(file)
+let output = pretty.prettify(input) // <- This is the main function
+fs.writeFileSync(file, output + "\n")
 ```
 
 ## Known Issues
@@ -60,6 +59,10 @@ fs.writeFileSync(file, output)
 none yet..
 
 ## Release Notes
+
+### 1.12.0
+
+ - Removed `eol` property. Godot editor always saves with unix-style endings anyway.
 
 ### 1.11.3
 

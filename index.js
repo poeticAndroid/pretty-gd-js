@@ -3,26 +3,20 @@ const tokenize = require("./tokenizer")
 let m = {
   prettify,
   isInsideString: false,
-  eol: null,
   indent: null,
   tabSize: 4,
 }
 
 function prettify(input, startInsideString = false) {
-  if (!m.eol) {
-    if (input.includes("\r")) m.eol = "\r\n"
-    else if (input.includes("\n")) m.eol = "\n"
-    else m.eol = ""
-  }
   m.isInsideString = startInsideString
-  input = input.replaceAll("\r", "")
+  input = ("" + input).replaceAll("\r", "")
   let lines = input.split("\n")
   let output = ""
   let indentLvl = 0
   for (let lineNum = 0; lineNum < lines.length; lineNum++) {
     let line = lines[lineNum]
     if (m.isInsideString) {
-      output += line + m.eol
+      output += line + "\n"
       if (line.includes("\"\"\"")) m.isInsideString = false
       continue
     }
@@ -37,7 +31,7 @@ function prettify(input, startInsideString = false) {
     }
     tokens.shift()
     let newLine = (thisIndent + tokens.join("")).trimEnd()
-    output += newLine + m.eol
+    output += newLine + "\n"
     let lastToken = tokens.pop()
     if (lastToken && lastToken.slice(0, 3) === "\"\"\"" && !lastToken.includes("\"\"\"", 3)) m.isInsideString = true
   }

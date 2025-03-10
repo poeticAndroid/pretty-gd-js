@@ -5,19 +5,14 @@ const fs = require("node:fs"),
 
 const program = new commander.Command("pretty-gd-js")
 program
-  .option("--lf", "Unix-type line endings")
-  .option("--crlf", "Dos-type line endings")
-  .option("--spaces <size>", "Space-based indentation")
-  .option("--tabs", "Tab-based indentation")
+  .option("-s, --spaces <size>", "space-based indentation")
+  .option("-t, --tabs", "tab-based indentation")
   .arguments("<files...>")
   .parse()
 
 
 function init() {
-  let input = "", output = ""
   let opts = program.opts()
-  if (opts.lf) pretty.eol = "\n"
-  if (opts.crlf) pretty.eol = "\r\n"
   if (opts.spaces) {
     pretty.indent = ""
     pretty.tabSize = opts.spaces == true ? 4 : opts.spaces
@@ -28,9 +23,10 @@ function init() {
   if (opts.tabs) {
     pretty.indent = "\t"
   }
+
   for (file of program.args) {
-    input = "" + fs.readFileSync(file)
-    output = pretty.prettify(input)
+    let input = fs.readFileSync(file)
+    let output = pretty.prettify(input)
     output += pretty.eol || "\n"
     fs.writeFileSync(file, output)
   }
