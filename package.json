@@ -1,6 +1,6 @@
 {
   "name": "prettify-gdscript",
-  "version": "0.0.1",
+  "version": "1.11.0",
   "description": "A library that makes GDScript code look pretty.",
   "main": "index.js",
   "bin": {
@@ -11,9 +11,12 @@
   },
   "keywords": [
     "cli",
+    "godot",
     "gdscript",
     "format",
-    "prettify"
+    "formatter",
+    "prettify",
+    "prettifier"
   ],
   "author": "poeticAndroid",
   "license": "ISC",

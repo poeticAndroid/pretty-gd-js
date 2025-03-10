@@ -17,14 +17,20 @@ $ npm install -g prettify-gdscript
 $ prettify-gdscript *.gd
 ```
 
-### API
+### JavaScript API
 
-  - `prettify(input:string, startInsideString:bool = false) -> string`
-    - `input:string` - The string of GDScript to make pretty.
-    - `startInsideString:bool` - if `true`, assume `input` is starting inside a `"""multiline string"""`. Default is `false`.
-  - `isInsideString:bool` - `true` if last operation ended inside a `"""multiline string"""`.
-  - `indent:string` - indentation string. Default is `"\t"`.
-  - `eol:string` - line ending. Default is auto-detect.
+  - `prettify(input: string, startInsideString: bool = false): string`
+    - `input: string` - The string of GDScript to make pretty.
+    - `startInsideString: bool` - if `true`, assume `input` is starting inside a `"""string"""`. Default is `false`.
+  - `isInsideString: bool` - `true` if last operation ended inside a `"""string"""`.
+  - `eol: string` - line ending. Default is `null` for auto-detect.
+  - `indent: string` - indentation string. Default is `null` for auto-detect.
+  - `tabSize: number` - Tab size. This will be overwritten if `indent` is set or detected to be space-based. Default is `4`.
+
+To parse a document line by line, remember to feed `isInsideString` back into the `prettify()` call as the second parameter.
+
+Keep in mind that `eol`, `indent` and `tabSize` will be preserved between calls to `prettify()`.
+If you want to auto-detect for each call, remember to reset these properties to `null`.
 
 #### Example
 
@@ -45,6 +51,11 @@ fs.writeFileSync(file, output)
 none yet..
 
 ## Release Notes
+
+### 1.11.0
+
+ - The command line tool now actually works
+ - Parse intentation based on visual space, rather than character count
 
 ### 1.10.0
 
