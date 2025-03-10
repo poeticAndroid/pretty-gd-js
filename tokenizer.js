@@ -66,7 +66,7 @@ function tokenize(_input) {
     lastTokenType = tokenType
     readWhitespace()
   }
-  // if (input !== tokens.join("")) console.log(input, tokens)
+  if (tokens.length == 1) tokens[0] = ""
   return tokens
 }
 
