@@ -173,6 +173,6 @@ function between(type1, type2) {
 
 const keywords = ["if", "else", "elif", "for", "while", "match", "break", "continue", "pass", "return", "class", "class_name", "extends", "is", "as",
   "tool", "signal", "static", "const", "enum", "var", "onready", "export", "setget", "breakpoint", "yield", "remote", "master",
-  "puppet", "remotesync", "mastersync", "puppetsync", "in", "not", "and", "or"]
+  "puppet", "remotesync", "mastersync", "puppetsync", "in", "and", "or"]
 const longsymbols = ["**", "<<", ">>", "==", "!=", ">=", "<=", "&&", "||", "+=", "-=", "*=", "/=", "%=", "**=", "&=", "^=", "|=", "<<=", ">>=", ":=", "->"]
 module.exports = tokenize

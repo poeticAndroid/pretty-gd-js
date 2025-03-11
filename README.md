@@ -21,7 +21,7 @@ Usage: pretty-gd-js [options] [files...]
 Options:
   -s, --spaces <size>  space-based indentation
   -t, --tabs           tab-based indentation
-  -d, --dir <path>     prettify all *.gd files in <path>
+  -d, --dir <path>     prettify all *.gd files in a directory
   -w, --watch <path>   automatically prettify any modified *.gd files
   -h, --help           display help for command
 ```
@@ -61,6 +61,11 @@ fs.writeFileSync(file, output + "\n")
 none yet..
 
 ## Release Notes
+
+### 1.13.0
+
+ - Command line options to prettify entire folders.
+ - `not` is no longer treated as a keyword that has to be surrounded by whitespace.
 
 ### 1.12.0
 

@@ -19,6 +19,7 @@ var dict = {"key": "value", 2: 3}
 var other_dict = {key = "value", other_key = 2}
 var typed_var: int
 var inferred_type := "String"
+var wrong = (not(true))
 
 # Constants.
 const ANSWER = 42
