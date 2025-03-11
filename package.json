@@ -1,6 +1,6 @@
 {
   "name": "pretty-gd-js",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "description": "A library that makes GDScript code look pretty.",
   "main": "index.js",
   "bin": {
@@ -11,6 +11,7 @@
   },
   "keywords": [
     "cli",
+    "command-line",
     "godot",
     "gdscript",
     "format",
