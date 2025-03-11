@@ -66,6 +66,7 @@ none yet..
 
  - Command line options to prettify entire folders.
  - `not` is no longer treated as a keyword that has to be surrounded by whitespace.
+ - `{ curly brackets }` are now padded inside.
 
 ### 1.12.0
 

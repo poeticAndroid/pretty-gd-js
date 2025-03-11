@@ -43,10 +43,10 @@ function tokenize(_input) {
       token = readName()
     } else if (char.match(/[0-9]/)) {
       token = readNumber()
-    } else if (char === "{") {
+    } else if (char === "{" || char === "}") {
       pos++
       token = char
-      tokenType = "curly"
+      tokenType = char
     } else if (char.match(/[\[\]\(\)\{\}\.]/)) {
       pos++
       token = char
@@ -154,6 +154,9 @@ function between(type1, type2) {
   if (!type1) return ""
   if (!type2) return ""
   if (type2 === "comment") return "  "
+
+  if (type1 === "{") return " "
+  if (type2 === "}") return " "
 
   if (type1 === "symbol") return " "
   if (type2 === "symbol") return " "
