@@ -7,7 +7,7 @@ let m = {
   tabSize: 4,
 }
 
-function prettify(input, startInsideString = false) {
+function prettify(input, startInsideString = null) {
   m.isInsideString = startInsideString
   input = ("" + input).replaceAll("\r", "")
   let lines = input.split("\n")
@@ -16,13 +16,16 @@ function prettify(input, startInsideString = false) {
   let lastLineWasBlank = true
   for (let lineNum = 0; lineNum < lines.length; lineNum++) {
     let line = lines[lineNum]
+    if (m.isInsideString) line = m.isInsideString + line
+    let tokens = tokenize(line)
     if (m.isInsideString) {
-      output += line + "\n"
-      if (line.includes("\"\"\"")) m.isInsideString = false
-      continue
+      tokens[1] = tokens[1]?.replace(m.isInsideString, "")
+      if (tokens[1]?.slice(-m.isInsideString) !== m.isInsideString) {
+        output += tokens.join("") + "\n"
+        continue
+      } else m.isInsideString == null
     }
 
-    let tokens = tokenize(line)
     if (!m.indent) m.indent = tokens[0]
     if (m.indent.includes("\t")) m.indent = "\t"
     if (m.indent) m.tabSize = spaceSize(m.indent)
@@ -40,7 +43,8 @@ function prettify(input, startInsideString = false) {
     lastLineWasBlank = !tokens.length
 
     let lastToken = tokens.pop()
-    if (lastToken && lastToken.slice(0, 3) === "\"\"\"" && !lastToken.includes("\"\"\"", 3)) m.isInsideString = true
+    let quot = isString(lastToken)
+    if (quot && lastToken.replace(quot, "").slice(-quot.length) !== quot) m.isInsideString = quot
   }
   return output.trimEnd()
 }
@@ -64,6 +68,17 @@ function spaceSize(whitespace) {
     }
   }
   return sum
+}
+
+function isString(token) {
+  if (!token) return null
+  if (token.charAt(0).match(/[r\&\$\%\^]/)) token = token.slice(1)
+  let quot = token.slice(0, 3)
+  if (quot === '"""') return quot
+  if (quot === "'''") return quot
+  quot = token.slice(0, 1)
+  if (quot.match(/[\"\']/)) return quot
+  return null
 }
 
 

@@ -30,16 +30,19 @@ function tokenize(_input) {
       tokenType = "name"
     } else if (char.match(/[\&\$\%\^]/) && input.charAt(pos + 1).trim()) {
       token = readNode()
-    } else if (char.match(/[\-\!]/) && input.charAt(pos + 1).match(/[0-9\.a-z_A-Z]/)) {
+    } else if (char.match(/[\-\!]/) && input.charAt(pos + 1).match(/[0-9\.a-z_]/i)) {
       pos++
-      if (input.charAt(pos).match(/[a-z_A-Z]/)) {
+      if (input.charAt(pos).match(/[a-z_]/i)) {
         token = char + readName()
       } else {
         token = char + readNumber()
       }
     } else if (char === "." && input.charAt(pos + 1).match(/[0-9]/)) {
       token = readNumber()
-    } else if (char.match(/[a-z_A-Z]/)) {
+    } else if (char === "r" && input.charAt(pos + 1).match(/[\"\']/)) {
+      pos++
+      token = char + readString()
+    } else if (char.match(/[a-z_]/i)) {
       token = readName()
     } else if (char.match(/[0-9]/)) {
       token = readNumber()
@@ -51,7 +54,7 @@ function tokenize(_input) {
       pos++
       token = char
       tokenType = "parens"
-    } else if (char === "\"" || char === "'") {
+    } else if (char.match(/[\"\']/)) {
       token = readString()
     } else if (char === "," || char === ";" || char === ":") {
       pos++
@@ -80,7 +83,7 @@ function readWhitespace() {
 
 function readName() {
   let token = ""
-  while (input.charAt(pos).match(/[a-z_A-Z0-9]/)) {
+  while (input.charAt(pos).match(/[a-z_0-9]/i)) {
     token += input.charAt(pos++)
   }
   if (keywords.includes(token)) {
@@ -94,10 +97,10 @@ function readNode() {
   let token = ""
   if (!input.charAt(pos).match(/[\&\$\%\^]/)) return token
   token += input.charAt(pos++)
-  if (input.charAt(pos) === "\"") {
+  if (input.charAt(pos).match(/[\"\']/)) {
     token += readString()
   } else {
-    while (input.charAt(pos).match(/[a-z_A-Z0-9\/\%]/)) {
+    while (input.charAt(pos).match(/[a-z_0-9\/\%]/i)) {
       token += input.charAt(pos++)
     }
   }
@@ -106,46 +109,36 @@ function readNode() {
 }
 function readNumber() {
   let token = ""
-  if (input.charAt(pos).match(/[0-9.e\-\_]/)) {
+  if (input.charAt(pos).match(/[0-9.e\-\_]/i)) {
     token += input.charAt(pos++)
   }
-  if (input.charAt(pos).match(/[0-9.e\-\_xb]/)) {
+  if (input.charAt(pos).match(/[0-9.e\-\_xb]/i)) {
     token += input.charAt(pos++)
   }
-  if (token === "0x") {
-    while (input.charAt(pos).match(/[a-f0-9.e\-\_]/)) {
+  if (token.toLowerCase() === "0x") {
+    while (input.charAt(pos).match(/[a-f0-9.e\-\_]/i)) {
       token += input.charAt(pos++)
     }
   } else {
-    while (input.charAt(pos).match(/[0-9.e\-\_]/)) {
+    while (input.charAt(pos).match(/[0-9.e\-\_]/i)) {
       token += input.charAt(pos++)
     }
   }
   tokenType = "number"
-  return token
+  return token.toLowerCase()
 }
 function readString() {
   let token = ""
-  if (input.slice(pos, pos + 3) === "\"\"\"") {
-    token += input.slice(pos, pos + 3)
-    pos += 3
-    while (pos < input.length && input.slice(pos, pos + 3) !== "\"\"\"") {
-      token += input.charAt(pos++)
-    }
-    token += input.slice(pos, pos + 3)
-    pos += 3
-    tokenType = "string"
-    return token
-  }
-  token += input.charAt(pos++)
-  let quot = token.trim().charAt(0)
-  while (pos < input.length && input.charAt(pos) !== quot) {
+  let quot = input.slice(pos, pos + 3)
+  if (quot.charAt(0) != quot.charAt(1) || quot.charAt(0) != quot.charAt(2)) quot = input.charAt(pos)
+  token += input.slice(pos, pos + quot.length)
+  pos += quot.length
+  while (pos < input.length && input.slice(pos, pos + quot.length) !== quot) {
     token += input.charAt(pos++)
-    if (input.charAt(pos - 1) === "\\") {
-      token += input.charAt(pos++)
-    }
+    if (input.charAt(pos - 1) === "\\") token += input.charAt(pos++)
   }
-  token += input.charAt(pos++)
+  token += input.slice(pos, pos + quot.length)
+  pos += quot.length
   tokenType = "string"
   return token
 }

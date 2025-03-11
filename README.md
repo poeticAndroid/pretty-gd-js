@@ -24,10 +24,10 @@ Options:
 
 ### JavaScript API
 
-  - `prettify(input: string, startInsideString: bool = false): string`
+  - `prettify(input: string, startInsideString: string = null): string`
     - `input: string` // The string of GDScript to make pretty.
-    - `startInsideString: bool` // if `true`, assume `input` is starting inside a `"""string"""`. Default is `false`.
-  - `isInsideString: bool` // This is `true` if last operation ended inside a `"""string"""`.
+    - `startInsideString: string` // If set to a string delimiter, assume `input` is starting inside a string. Default is `null`.
+  - `isInsideString: string` // If last operation ended inside a string, this will be set to the type of quotes of the string.
   - `indent: string` // Indentation string. Default is `null` for auto-detect.
   - `tabSize: number` // Tab size. This will be overwritten if `indent` is set or detected to be space-based. Default is `4`.
 
@@ -57,6 +57,12 @@ fs.writeFileSync(file, output + "\n")
 If you come across any issues with using this software, please [let me know](https://github.com/poeticAndroid/pretty-gd-js/issues).
 
 ## Release Notes
+
+### 1.14.0
+
+ - Number literals, including hexadecimals, will be corrected to lower case.
+ - Support for all types of strings, including `r"raw strings"`, `'''triple-single-quoted strings'''` and `%"node strings"`.
+ - Better handling of multiline strings of any type. API changed slightly.
 
 ### 1.13.1
 
