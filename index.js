@@ -13,6 +13,7 @@ function prettify(input, startInsideString = false) {
   let lines = input.split("\n")
   let output = ""
   let indentLvl = 0
+  let lastLineWasBlank = true
   for (let lineNum = 0; lineNum < lines.length; lineNum++) {
     let line = lines[lineNum]
     if (m.isInsideString) {
@@ -20,6 +21,7 @@ function prettify(input, startInsideString = false) {
       if (line.includes("\"\"\"")) m.isInsideString = false
       continue
     }
+
     let tokens = tokenize(line)
     if (!m.indent) m.indent = tokens[0]
     if (m.indent.includes("\t")) m.indent = "\t"
@@ -29,9 +31,14 @@ function prettify(input, startInsideString = false) {
     for (let i = 0; i < indentLvl; i++) {
       thisIndent += m.indent
     }
+
     tokens.shift()
     let newLine = (thisIndent + tokens.join("")).trimEnd()
-    output += newLine + "\n"
+    if (tokens.length || !lastLineWasBlank) output += newLine + "\n"
+    let i = output.lastIndexOf("\n\n")
+    if (i > 0 && ["class", "func"].includes(tokens[0]?.trim())) output = output.slice(0, i + 1) + output.slice(i)
+    lastLineWasBlank = !tokens.length
+
     let lastToken = tokens.pop()
     if (lastToken && lastToken.slice(0, 3) === "\"\"\"" && !lastToken.includes("\"\"\"", 3)) m.isInsideString = true
   }

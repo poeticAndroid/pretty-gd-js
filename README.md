@@ -67,6 +67,7 @@ none yet..
  - Command line options to prettify entire folders.
  - `not` is no longer treated as a keyword that has to be surrounded by whitespace.
  - `{ curly brackets }` are now padded inside.
+ - Vertical spacing gets adjusted. `func` and `class` declarations get two blank lines above them. Maximum one consecutive blank line everywhere else.
 
 ### 1.12.0
 
