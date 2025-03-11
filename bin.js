@@ -8,14 +8,15 @@ const program = new commander.Command("pretty-gd-js")
 program
   .option("-s, --spaces <size>", "space-based indentation")
   .option("-t, --tabs", "tab-based indentation")
-  .option("-d, --dir <path>", "prettify all *.gd files in a directory")
-  .option("-w, --watch <path>", "automatically prettify any modified *.gd files")
-  .arguments("[files...]")
+  .option("-d, --dir", "prettify all *.gd files in a directory")
+  .option("-w, --watch", "automatically prettify any modified *.gd files")
+  .arguments("[path] [files...]")
   .parse()
 
 
 function init() {
   let opts = program.opts()
+  let dir
   if (opts.spaces) {
     pretty.indent = ""
     pretty.tabSize = opts.spaces == true ? 4 : opts.spaces
@@ -27,16 +28,22 @@ function init() {
     pretty.indent = "\t"
   }
   if (opts.dir) {
-    prettifyFolder(opts.watch, true)
+    if (!dir) dir = program.args.shift()
+    while (dir.slice(-1) == "\\") dir = dir.slice(0, -1)
+    prettifyFolder(dir, true)
   }
   if (opts.watch) {
-    while (opts.watch.slice(-1) == "\\") opts.watch = opts.watch.slice(0, -1)
-    console.log("Watching", opts.watch, "...")
-    setInterval(e => prettifyFolder(opts.watch), 2048)
+    if (!dir) dir = program.args.shift()
+    while (dir.slice(-1) == "\\") dir = dir.slice(0, -1)
+    console.log("Watching", dir, "...")
+    setInterval(e => prettifyFolder(dir), 2048)
   }
 
-  for (file of program.args) {
-    prettifyFile(file)
+  for (let filename of program.args) {
+    while (filename.slice(-1) == "\\") filename = filename.slice(0, -1)
+    let stat = fs.statSync(filename)
+    if (stat.isDirectory()) prettifyFolder(filename, true)
+    else prettifyFile(filename)
   }
 }
 

@@ -4,10 +4,6 @@
 
 A formatter for GDScript that just works!
 
-## Requirements
-
-None!
-
 ## Usage
 
 ### Command line
@@ -16,13 +12,13 @@ None!
 $ npm install -g pretty-gd-js
 
 $ pretty.gd --help
-Usage: pretty-gd-js [options] [files...]
+Usage: pretty-gd-js [options] [path] [files...]
 
 Options:
   -s, --spaces <size>  space-based indentation
   -t, --tabs           tab-based indentation
-  -d, --dir <path>     prettify all *.gd files in a directory
-  -w, --watch <path>   automatically prettify any modified *.gd files
+  -d, --dir            prettify all *.gd files in a directory
+  -w, --watch          automatically prettify any modified *.gd files
   -h, --help           display help for command
 ```
 
@@ -58,11 +54,11 @@ fs.writeFileSync(file, output + "\n")
 
 ## Known Issues
 
-none yet..
+If you come across any issues with using this software, please [let me know](https://github.com/poeticAndroid/pretty-gd-js/issues).
 
 ## Release Notes
 
-### 1.13.0
+### 1.13.1
 
  - Command line options to prettify entire folders.
  - `not` is no longer treated as a keyword that has to be surrounded by whitespace.
