@@ -16,11 +16,13 @@ None!
 $ npm install -g pretty-gd-js
 
 $ pretty.gd --help
-Usage: pretty-gd-js [options] <files...>
+Usage: pretty-gd-js [options] [files...]
 
 Options:
   -s, --spaces <size>  space-based indentation
   -t, --tabs           tab-based indentation
+  -d, --dir <path>     prettify all *.gd files in <path>
+  -w, --watch <path>   automatically prettify any modified *.gd files
   -h, --help           display help for command
 ```
 
