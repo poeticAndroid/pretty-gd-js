@@ -1,6 +1,6 @@
-const tokenize = require("./tokenizer")
+import tokenize from "./tokenizer.js"
 
-let m = {
+const m = {
   prettify,
   isInsideString: false,
   indent: null,
@@ -82,4 +82,4 @@ function isString(token) {
 }
 
 
-module.exports = m
+export default m

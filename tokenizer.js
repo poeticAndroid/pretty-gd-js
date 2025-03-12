@@ -171,4 +171,4 @@ const keywords = ["if", "else", "elif", "for", "while", "match", "break", "conti
   "tool", "signal", "static", "const", "enum", "var", "onready", "export", "setget", "breakpoint", "yield", "remote", "master",
   "puppet", "remotesync", "mastersync", "puppetsync", "in", "and", "or"]
 const longsymbols = ["**", "<<", ">>", "==", "!=", ">=", "<=", "&&", "||", "+=", "-=", "*=", "/=", "%=", "**=", "&=", "^=", "|=", "<<=", ">>=", ":=", "->"]
-module.exports = tokenize
+export default tokenize

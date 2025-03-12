@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 
-const fs = require("node:fs"),
-  pretty = require("./index"),
-  commander = require("commander"),
-  pck = require("./package.json")
+import fs from "node:fs"
+import pretty from "./index.js"
+import { Command } from "commander"
+import pck from "./package.json" with {type: "json"}
 
-const program = new commander.Command(myName())
+const program = new Command(myName())
 program
   .option("-s, --spaces <size>", "enforce (or, if -t is also set, convert from) space-based indentation")
   .option("-t, --tabs", "enforce tab-based indentation")
   .option("-d, --dir", "prettify all *.gd files in [path]")
   .option("-w, --watch", "automatically prettify any modified *.gd files in [path]")
+  .option("-v, --version", "display version")
   .arguments("[path] [files...]")
   .parse()
 
@@ -39,6 +40,8 @@ function init() {
     console.log("Watching", path, "for changes...")
     setInterval(e => prettifyFolder(path), 2048)
   }
+
+  if (opts.version) console.log(myName(), pck.version)
 
   if (!path && !program.args.length) console.log(`Run '${myName()} --help' for help.`)
   else for (let filename of program.args) {

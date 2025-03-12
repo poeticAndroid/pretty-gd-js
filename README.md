@@ -19,6 +19,7 @@ Options:
   -t, --tabs           enforce tab-based indentation
   -d, --dir            prettify all *.gd files in [path]
   -w, --watch          automatically prettify any modified *.gd files in [path]
+  -v, --version        display version
   -h, --help           display help for command
 ```
 
@@ -39,8 +40,8 @@ If you want to auto-detect for each call, remember to reset these properties to 
 #### Example
 
 ```js
-const fs = require("node:fs"),
-  pretty = require("pretty-gd-js")
+import fs from "node:fs"
+import pretty from "pretty-gd-js"
 
 // configure indentation
 pretty.indent = "\t"
@@ -57,6 +58,11 @@ fs.writeFileSync(file, output + "\n")
 If you come across any issues with using this software, please [let me know](https://github.com/poeticAndroid/pretty-gd-js/issues).
 
 ## Release Notes
+
+### 1.14.2
+
+ - Refactored to use ES modules instead of `require`
+ - Display version with `--version`
 
 ### 1.14.1
 
