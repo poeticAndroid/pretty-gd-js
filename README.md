@@ -60,7 +60,7 @@ If you come across any issues with using this software, please [let me know](htt
 
 ### 1.14.1
 
- - When `--dir` or `--watch` are used without specifying a `path`, it will default to current directory.
+ - If `--dir` or `--watch` are used without specifying a `path`, it will default to current directory.
  - Command-line tool will safely ignore files and folders it cannot access.
 
 ### 1.14.0
