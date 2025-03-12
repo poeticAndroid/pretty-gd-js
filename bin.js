@@ -38,7 +38,7 @@ function init() {
     if (!path) path = program.args.shift() || "."
     path = stripTrailingSlash(path) + "/"
     console.log("Watching", path, "for changes...")
-    setInterval(e => prettifyFolder(path), 2048)
+    setInterval(e => prettifyFolder(path), 1024)
   }
 
   if (opts.version) console.log(myName(), pck.version)
@@ -80,8 +80,7 @@ function prettifyFolder(pathname, newerThan = newestTime) {
     let stat = statSafe(filename)
     if (stat?.isDirectory()) prettifyFolder(filename, newerThan)
     else if (stat?.isFile() && filename.slice(-3).toLowerCase() == ".gd") {
-      if (newerThan == true) prettifyFile(filename)
-      else if (newerThan) setTimeout(e => prettifyFile(filename, newerThan), 1024)
+      if (newerThan) prettifyFile(filename, newerThan)
       else newestTime = Math.max(newestTime, stat?.mtimeMs || 0)
     }
   }
