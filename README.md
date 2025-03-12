@@ -12,13 +12,13 @@ A formatter for GDScript that just works!
 $ npm install -g pretty-gd-js
 
 $ pretty.gd --help
-Usage: pretty-gd-js [options] [path] [files...]
+Usage: pretty.gd [options] [path] [files...]
 
 Options:
-  -s, --spaces <size>  space-based indentation
-  -t, --tabs           tab-based indentation
-  -d, --dir            prettify all *.gd files in a directory
-  -w, --watch          automatically prettify any modified *.gd files
+  -s, --spaces <size>  enforce (or, if -t is also set, convert from) space-based indentation
+  -t, --tabs           enforce tab-based indentation
+  -d, --dir            prettify all *.gd files in [path]
+  -w, --watch          automatically prettify any modified *.gd files in [path]
   -h, --help           display help for command
 ```
 
@@ -27,7 +27,7 @@ Options:
   - `prettify(input: string, startInsideString: string = null): string`
     - `input: string` // The string of GDScript to make pretty.
     - `startInsideString: string` // If set to a string delimiter, assume `input` is starting inside a string. Default is `null`.
-  - `isInsideString: string` // If last operation ended inside a string, this will be set to the type of quotes of the string.
+  - `isInsideString: string` // If last operation ended inside a string, this will be set to the type of quotes of the string. Otherwise `null`.
   - `indent: string` // Indentation string. Default is `null` for auto-detect.
   - `tabSize: number` // Tab size. This will be overwritten if `indent` is set or detected to be space-based. Default is `4`.
 
@@ -57,6 +57,11 @@ fs.writeFileSync(file, output + "\n")
 If you come across any issues with using this software, please [let me know](https://github.com/poeticAndroid/pretty-gd-js/issues).
 
 ## Release Notes
+
+### 1.14.1
+
+ - When `--dir` or `--watch` are used without specifying a `path`, it will default to current directory.
+ - Command-line tool will safely ignore files and folders it cannot access.
 
 ### 1.14.0
 
