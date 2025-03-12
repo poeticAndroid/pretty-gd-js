@@ -61,8 +61,10 @@ If you come across any issues with using this software, please [let me know](htt
 
 ### 1.14.2
 
- - Refactored to use ES modules instead of `require`
- - Display version with `--version`
+ - Display version with `--version`.
+ - Refactored to use ES modules instead of `require`.
+ - Test tool that runs in the browser.
+ - Fixed bug parsing multi-line strings.
 
 ### 1.14.1
 

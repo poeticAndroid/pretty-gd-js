@@ -18,9 +18,10 @@ function prettify(input, startInsideString = null) {
     let line = lines[lineNum]
     if (m.isInsideString) line = m.isInsideString + line
     let tokens = tokenize(line)
+    // console.log(lineNum, m.isInsideString, tokens)
     if (m.isInsideString) {
       tokens[1] = tokens[1]?.replace(m.isInsideString, "")
-      if (tokens[1]?.slice(-m.isInsideString) !== m.isInsideString) {
+      if (tokens[1]?.trim().slice(-m.isInsideString.length) !== m.isInsideString) {
         output += tokens.join("") + "\n"
         continue
       } else m.isInsideString == null
@@ -42,9 +43,10 @@ function prettify(input, startInsideString = null) {
     if (i > 0 && ["class", "func"].includes(tokens[0]?.trim())) output = output.slice(0, i + 1) + output.slice(i)
     lastLineWasBlank = !tokens.length
 
-    let lastToken = tokens.pop()
+    let lastToken = tokens.pop()?.trim()
     let quot = isString(lastToken)
     if (quot && lastToken.replace(quot, "").slice(-quot.length) !== quot) m.isInsideString = quot
+    else m.isInsideString = null
   }
   return output.trimEnd()
 }
