@@ -17,6 +17,7 @@ Usage: pretty.gd [options] [path] [files...]
 Options:
   -s, --spaces <size>  enforce (or, if -t is also set, convert from) space-based indentation
   -t, --tabs           enforce tab-based indentation
+  -p, --stdio          read from stdin and write it prettified to stdout
   -d, --dir            prettify all *.gd files in [path]
   -w, --watch          automatically prettify any modified *.gd files in [path]
   -v, --version        display version
@@ -62,6 +63,7 @@ If you come across any issues with using this software, please [let me know](htt
 ### 1.15.0
 
  - In `--watch` mode, file changes will be delayed by one second to ensure Godot editor will detect it as an external change.
+ - Added `--stdio` mode for piping data in and out.
 
 ### 1.14.2
 

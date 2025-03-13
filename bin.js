@@ -9,6 +9,7 @@ const program = new Command(binName())
 program
   .option("-s, --spaces <size>", "enforce (or, if -t is also set, convert from) space-based indentation")
   .option("-t, --tabs", "enforce tab-based indentation")
+  .option("-p, --stdio", "read from stdin and write it prettified to stdout")
   .option("-d, --dir", "prettify all *.gd files in [path]")
   .option("-w, --watch", "automatically prettify any modified *.gd files in [path]")
   .option("-v, --version", "display version")
@@ -27,6 +28,21 @@ function init() {
   }
   if (opts.tabs) {
     pretty.indent = "\t"
+  }
+
+  if (opts.stdio) {
+    let input = ""
+    process.stdin.on("readable", e => {
+      let chunk = ""
+      do {
+        input += chunk
+      } while (chunk = process.stdin.read())
+    })
+    process.stdin.on("end", e => {
+      process.stdout.write(pretty.prettify(input))
+      process.stdout.write(pretty.eol || "\n")
+    })
+    return
   }
 
   if (opts.dir) {
