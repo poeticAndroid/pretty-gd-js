@@ -63,7 +63,7 @@ If you come across any issues with using this software, please [let me know](htt
 
  - Display version with `--version`.
  - Refactored to use ES modules instead of `require`.
- - Test tool that runs in the browser.
+ - Test tool that [runs in the browser](https://github.com/poeticAndroid/pretty-gd-js/blob/main/test/test.html).
  - Fixed bug parsing multi-line strings.
 
 ### 1.14.1
