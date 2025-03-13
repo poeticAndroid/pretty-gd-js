@@ -59,6 +59,10 @@ If you come across any issues with using this software, please [let me know](htt
 
 ## Release Notes
 
+### 1.15.0
+
+ - In `--watch` mode, file changes will be delayed by one second to ensure Godot editor will detect it as an external change.
+
 ### 1.14.2
 
  - Display version with `--version`.

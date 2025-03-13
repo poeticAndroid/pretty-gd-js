@@ -5,7 +5,7 @@ import pretty from "./index.js"
 import { Command } from "commander"
 import pck from "./package.json" with {type: "json"}
 
-const program = new Command(myName())
+const program = new Command(binName())
 program
   .option("-s, --spaces <size>", "enforce (or, if -t is also set, convert from) space-based indentation")
   .option("-t, --tabs", "enforce tab-based indentation")
@@ -41,9 +41,9 @@ function init() {
     setInterval(e => prettifyFolder(path), 1024)
   }
 
-  if (opts.version) console.log(myName(), pck.version)
+  if (opts.version) console.log("Package version:", pck.name, pck.version)
 
-  if (!path && !program.args.length) console.log(`Run '${myName()} --help' for help.`)
+  if (!path && !program.args.length) console.log(`\nRun '${binName()} --help' for help.`)
   else for (let filename of program.args) {
     filename = stripTrailingSlash(filename)
     let stat = fs.statSync(filename)
@@ -58,15 +58,22 @@ function prettifyFile(filename, newerThan = 0) {
   // debugCall("prettifyFile", ...arguments)
   let stat = fs.statSync(filename)
   if (stat.mtimeMs <= newerThan) return
-  newestTime = Math.max(newestTime, stat.mtimeMs)
   let input = ("" + fs.readFileSync(filename)).replaceAll("\r", "")
   let output = pretty.prettify(input) + "\n"
   if (input != output) {
-    let rnd = "" + Math.random()
-    fs.writeFileSync(filename + rnd + ".tmp", output)
-    fs.renameSync(filename + rnd + ".tmp", filename)
-    console.log(stat.mtime.toLocaleString(), filename, "changed!")
-  }
+    setTimeout(() => {
+      let newStat = statSafe(filename)
+      if (newStat?.mtimeMs != stat.mtimeMs) return
+      if (newStat?.size != stat.size) return
+
+      let tmp = Math.random() + "pretty.tmp"
+      fs.writeFileSync(filename + tmp, output)
+      fs.renameSync(filename + tmp, filename)
+
+      newestTime = Math.max(newestTime, stat.mtimeMs)
+      console.log(stat.mtime.toLocaleString(), filename, "changed!")
+    }, newerThan > true ? 1024 : 0)
+  } else newestTime = Math.max(newestTime, stat.mtimeMs)
 }
 
 function prettifyFolder(pathname, newerThan = newestTime) {
@@ -91,7 +98,6 @@ function readdirSafe(path) {
   try {
     return fs.readdirSync(path)
   } catch (error) {
-    console.log("fuck", error)
     return []
   }
 }
@@ -119,7 +125,7 @@ function debugCall(funcName, ...args) {
   console.log(funcName + "(", JSON.stringify(args).slice(1, -1), ")")
 }
 
-function myName() {
+function binName() {
   let script = process.argv[1].split(/[\/\\]/).pop().replace(".js", "")
   for (let key in pck.bin) {
     if (script == pck.bin[key].split(/[\/\\]/).pop().replace(".js", "")) return key
