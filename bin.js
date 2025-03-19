@@ -74,6 +74,7 @@ function prettifyFile(filename, newerThan = 0) {
   // debugCall("prettifyFile", ...arguments)
   let stat = fs.statSync(filename)
   if (stat.mtimeMs <= newerThan) return
+  newestTime = Math.max(newestTime, stat.mtimeMs)
   let input = ("" + fs.readFileSync(filename)).replaceAll("\r", "")
   let output = pretty.prettify(input) + "\n"
   if (input != output) {
@@ -86,10 +87,9 @@ function prettifyFile(filename, newerThan = 0) {
       fs.writeFileSync(filename + tmp, output)
       fs.renameSync(filename + tmp, filename)
 
-      newestTime = Math.max(newestTime, stat.mtimeMs)
-      console.log(stat.mtime.toLocaleString(), filename, "changed!")
+      console.log(stat.mtime.toLocaleString(), filename, "pretty!")
     }, newerThan > true ? 1024 : 0)
-  } else newestTime = Math.max(newestTime, stat.mtimeMs)
+  }
 }
 
 function prettifyFolder(pathname, newerThan = newestTime) {

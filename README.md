@@ -24,6 +24,23 @@ Options:
   -h, --help           display help for command
 ```
 
+### Godot editor
+
+From the terminal/command line, type the following:
+
+```
+$ cd path/to/godot/project/
+
+$ pretty.gd -w
+Watching ./ for changes...
+```
+
+To disable the annoying "Files have been modified outside Godot" dialog box, go to the following setting and enable it:
+
+`Editor -> Editor Settings -> Text Editor -> Behavior -> Auto Reload Scripts on External Change`
+
+Note that when `pretty.gd` modifies a file, the changes doesn't show up in Godot editor right away. External changes are only detected when the Godot window changes focus.
+
 ### JavaScript API
 
   - `prettify(input: string, startInsideString: string = null): string`
@@ -56,9 +73,16 @@ fs.writeFileSync(file, output + "\n")
 
 ## Known Issues
 
-If you come across any issues with using this software, please [let me know](https://github.com/poeticAndroid/pretty-gd-js/issues).
+ - The Godot editor only checks for file changes when the window changes from unfocused to focused. So if you're running `pretty.gd -w` in the background, and it prettifies a script you just saved, you won't see the prettified script until you tab out and back into the editor.
+ - It seems Godot editor only checks the file timestamp down to the second (at least on some systems), meaning if Godot editor saves a file that then gets changed and resaved externally within the same second, Godot editor doesn't detect it as a change. Hence why `pretty.gd -w` will wait one second before resaving the file.
+
+If you come across any other issues with using this software, please [let me know](https://github.com/poeticAndroid/pretty-gd-js/issues).
 
 ## Release Notes
+
+### 1.16.0
+
+ - `match`, `tool`, `onready`, `export`, `setget`, `remote`, `master`, `puppet`, `remotesync`, `mastersync` and `puppetsync` are no longer treated as keywords that has to be surrounded by whitespace.
 
 ### 1.15.0
 
