@@ -9,6 +9,7 @@ const program = new Command(binName())
 program
   .option("-s, --spaces <size>", "enforce (or, if -t is also set, convert from) space-based indentation")
   .option("-t, --tabs", "enforce tab-based indentation")
+  .option("-a, --auto", "auto-detect indentation on each file separately")
   .option("-p, --stdio", "read from stdin and write it prettified to stdout")
   .option("-d, --dir", "prettify all *.gd files in [path]")
   .option("-w, --watch", "automatically prettify any modified *.gd files in [path]")
@@ -28,6 +29,9 @@ function init() {
   }
   if (opts.tabs) {
     pretty.indent = "\t"
+  }
+  if (opts.auto) {
+    autoDetect = true
   }
 
   if (opts.stdio) {
@@ -69,27 +73,45 @@ function init() {
 }
 
 let newestTime = 0
+let autoDetect
+let indent
 
 function prettifyFile(filename, newerThan = 0) {
   // debugCall("prettifyFile", ...arguments)
   let stat = fs.statSync(filename)
   if (stat.mtimeMs <= newerThan) return
-  newestTime = Math.max(newestTime, stat.mtimeMs)
+  if (autoDetect) pretty.indent = null
   let input = ("" + fs.readFileSync(filename)).replaceAll("\r", "")
   let output = pretty.prettify(input) + "\n"
+  if (indent != getIndentSettings()) {
+    indent = getIndentSettings()
+    console.log("Indentation set to", indent)
+  }
   if (input != output) {
-    setTimeout(() => {
-      let newStat = statSafe(filename)
-      if (newStat?.mtimeMs != stat.mtimeMs) return
-      if (newStat?.size != stat.size) return
+    // if (newerThan > true && input.slice(-1) == "\n") output = output.trim()
 
-      let tmp = Math.random() + "pretty.tmp"
+    let tmp = Math.random() + "pretty.tmp"
+    try {
       fs.writeFileSync(filename + tmp, output)
       fs.renameSync(filename + tmp, filename)
+    } catch (error) {
+      console.log(stat?.mtime.toLocaleString(), "Error writing to", filename, "!!!")
+      fs.unlink(filename + tmp, console.log)
+      return null
+    }
 
-      console.log(stat.mtime.toLocaleString(), filename, "pretty!")
-    }, newerThan > true ? 1024 : 0)
-  }
+    // if (input.trim() != output.trim()) 
+    console.log(stat?.mtime.toLocaleString(), filename, "pretty!")
+
+    stat = statSafe(filename)
+    if (newerThan > true) setTimeout(e => {
+      if (!stat) return
+      stat.mtime.setSeconds(stat.mtime.getSeconds() + 1)
+      fs.utimesSync(filename, stat.mtime, stat.mtime)
+    }, 1024)
+  } // else console.log(stat?.mtime.toLocaleString(), filename, "already pretty..")
+  newestTime = Math.max(newestTime, stat.mtimeMs)
+  return true
 }
 
 function prettifyFolder(pathname, newerThan = newestTime) {
@@ -146,6 +168,13 @@ function binName() {
   for (let key in pck.bin) {
     if (script == pck.bin[key].split(/[\/\\]/).pop().replace(".js", "")) return key
   }
+}
+
+function getIndentSettings() {
+  if (!pretty.indent) return `auto-detect`
+  if (pretty.indent == "\t") return `tabs(${pretty.tabSize})`
+  if (pretty.indent.charAt(0) == " ") return `spaces(${pretty.tabSize})`
+  return `unknown`
 }
 
 init()

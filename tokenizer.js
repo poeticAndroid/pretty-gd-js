@@ -30,15 +30,19 @@ function tokenize(_input) {
       tokenType = "name"
     } else if (char.match(/[\&\$\%\^]/) && input.charAt(pos + 1).trim()) {
       token = readNode()
-    } else if (char.match(/[\-\!]/) && input.charAt(pos + 1).match(/[0-9\.a-z_]/i)) {
+    } else if (char.match(/[\-\!]/) && input.charAt(pos + 1).match(/[0-9a-z_]/i)) {
       pos++
-      if (input.charAt(pos).match(/[a-z_]/i)) {
+      let lastTokenChar = tokens[tokens.length - 1].trim().slice(-1)
+      if (lastTokenChar.match(/[\"\'\)\}\]]/i) || ["number", "name"].includes(lastTokenType)) {
+        tokenType = "symbol"
+        token = char
+      } else if (input.charAt(pos).match(/[a-z_]/i)) {
         token = char + readName()
       } else {
         token = char + readNumber()
       }
     } else if (char === "." && input.charAt(pos + 1).match(/[0-9]/)) {
-      token = readNumber()
+      token = readNumber("0")
     } else if (char === "r" && input.charAt(pos + 1).match(/[\"\']/)) {
       pos++
       token = char + readString()
@@ -107,25 +111,28 @@ function readNode() {
   tokenType = "node"
   return token
 }
-function readNumber() {
-  let token = ""
-  if (input.charAt(pos).match(/[0-9.e\-\_]/i)) {
-    token += input.charAt(pos++)
+function readNumber(token = "") {
+  let reg = /./i
+  while (input.charAt(pos).match(reg)) {
+    token += input.charAt(pos++).toLowerCase()
+    if (token === "0") { reg = /[0-9_.exb]/i; if (input.charAt(pos).match(/[0-9]/i)) token = "" }
+    else if (token.slice(0, 2) === "0x") { reg = /[a-f0-9_]/i }
+    else if (token.slice(0, 2) === "0b") { reg = /[0-1_]/i }
+    else if (token.slice(-1) === "e") { reg = /[0-9_\-\+]/i }
+    else if (token.includes("e")) { reg = /[0-9_]/i }
+    else if (token.includes(".")) { reg = /[0-9_e]/i }
+    else { reg = /[0-9_.e]/i }
   }
-  if (input.charAt(pos).match(/[0-9.e\-\_xb]/i)) {
-    token += input.charAt(pos++)
-  }
-  if (token.toLowerCase() === "0x") {
-    while (input.charAt(pos).match(/[a-f0-9.e\-\_]/i)) {
-      token += input.charAt(pos++)
-    }
-  } else {
-    while (input.charAt(pos).match(/[0-9.e\-\_]/i)) {
-      token += input.charAt(pos++)
-    }
-  }
+
+  if (token === "0x") token += "0"
+  else if (token === "0b") token += "0"
+  else if (token.slice(-1) === ".") token += "0"
+  else if (token.slice(-1) === "e") token += "0"
+  else if (token.slice(-1) === "-") token += "0"
+  else if (token.slice(-1) === "+") token += "0"
+
   tokenType = "number"
-  return token.toLowerCase()
+  return token
 }
 function readString() {
   let token = ""

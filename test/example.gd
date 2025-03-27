@@ -379,7 +379,7 @@ for node in node_array:
 	node.add_to_group("Cool_Group")  # This has an effect
 
 # match
-match (expression):
+match(expression):
 	[pattern](s):
 		[block]
 	[pattern](s):

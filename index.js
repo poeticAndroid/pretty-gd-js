@@ -20,11 +20,15 @@ function prettify(input, startInsideString = null) {
     let tokens = tokenize(line)
     // console.log(lineNum, m.isInsideString, tokens)
     if (m.isInsideString) {
-      tokens[1] = tokens[1]?.replace(m.isInsideString, "")
-      if (tokens[1]?.trim().slice(-m.isInsideString.length) !== m.isInsideString) {
+      tokens[1] = tokens[1]?.trim().slice(m.isInsideString.length)
+      if (tokens[1]?.slice(-m.isInsideString.length) !== m.isInsideString) {
         output += tokens.join("") + "\n"
         continue
-      } else m.isInsideString == null
+      } else {
+        output += tokens[1]
+        tokens[1] = ""
+        m.isInsideString == null
+      }
     }
 
     if (!m.indent) m.indent = tokens[0]
@@ -45,8 +49,7 @@ function prettify(input, startInsideString = null) {
 
     let lastToken = tokens.pop()?.trim()
     let quot = isString(lastToken)
-    if (quot && lastToken.replace(quot, "").slice(-quot.length) !== quot) m.isInsideString = quot
-    else m.isInsideString = null
+    if (quot && lastToken.slice(quot.length).slice(-quot.length) !== quot) m.isInsideString = quot
   }
   return output.trimEnd()
 }

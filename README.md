@@ -17,6 +17,7 @@ Usage: pretty.gd [options] [path] [files...]
 Options:
   -s, --spaces <size>  enforce (or, if -t is also set, convert from) space-based indentation
   -t, --tabs           enforce tab-based indentation
+  -a, --auto           auto-detect indentation on each file separately
   -p, --stdio          read from stdin and write it prettified to stdout
   -d, --dir            prettify all *.gd files in [path]
   -w, --watch          automatically prettify any modified *.gd files in [path]
@@ -35,6 +36,9 @@ $ pretty.gd -w
 Watching ./ for changes...
 ```
 
+The  `-w/--watch` option alone will not check already existing files, but only those that get modified _while_ `pretty.gd -w` is running.
+You can add `-d/--dir` to also check existing files, like this: `pretty.gd -d -w`
+
 To disable the annoying "Files have been modified outside Godot" dialog box, go to the following setting and enable it:
 
 `Editor -> Editor Settings -> Text Editor -> Behavior -> Auto Reload Scripts on External Change`
@@ -46,7 +50,7 @@ Note that when `pretty.gd` modifies a file, the changes doesn't show up in Godot
   - `prettify(input: string, startInsideString: string = null): string`
     - `input: string` // The string of GDScript to make pretty.
     - `startInsideString: string` // If set to a string delimiter, assume `input` is starting inside a string. Default is `null`.
-  - `isInsideString: string` // If last operation ended inside a string, this will be set to the type of quotes of the string. Otherwise `null`.
+  - `isInsideString: string` // If last operation ended inside a string, this will be set to the type of quotes(string delimiter) of the string. Otherwise `null`.
   - `indent: string` // Indentation string. Default is `null` for auto-detect.
   - `tabSize: number` // Tab size. This will be overwritten if `indent` is set or detected to be space-based. Default is `4`.
 
@@ -79,6 +83,16 @@ fs.writeFileSync(file, output + "\n")
 If you come across any other issues with using this software, please [let me know](https://github.com/poeticAndroid/pretty-gd-js/issues).
 
 ## Release Notes
+
+### 1.17.0
+
+ - `-a/--auto` option to auto-detect type of indentation on each file, instead of auto-detecting only on the first encountered file and applying it to all files, if neither `-s`, `-t` or `-a` is set.
+ - `pretty.gd -w` will now prettify a file immediately after detecting a change (which can still take up to a second). Instead of delaying the file write to trigger Godot editor's change detection, `pretty.gd` will write the file straight away and then update it's modification timestamp a second later.
+ - More strict parsing of number literals.
+ - A `0` gets added to number literals that start or end with a decimal point or `e`(exponent marker).
+ - Redundant leading zeroes gets removed from number literals.
+ - Negative numbers that come after closing brackets`)}]`, strings, names or other numbers are treated as a subtraction of a unsigned number, thus separating the `-` and the number.
+ - Bugfixed handling of multiline strings, so a string delimiter(`'`, `"`, `'''` or `"""`) can now stand alone on a line and the parser will recognize it as _either_ the beginning _or_ end of a string (and not both).
 
 ### 1.16.0
 
@@ -137,7 +151,7 @@ If you come across any other issues with using this software, please [let me kno
 
 ### 1.7.0
 
- - Recongnize operators longer than one character
+ - Recognize operators longer than one character
  - Refactored tokenizer
 
 ### 1.3.0

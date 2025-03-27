@@ -587,8 +587,8 @@ var other_float_number = 13.0
 
 # ::
 
-var float_number = .234
-var other_float_number = 13.
+	# var float_number = .234
+	# var other_float_number = 13.
 
 # Use lowercase for letters in hexadecimal numbers, as their lower height makes
 # the number easier to read.
