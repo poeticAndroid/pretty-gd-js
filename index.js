@@ -12,8 +12,10 @@ function prettify(input, startInsideString = null) {
   input = ("" + input).replaceAll("\r", "")
   let lines = input.split("\n")
   let output = ""
-  let indentLvl = 0
   let lastLineWasBlank = true
+  let indentLvl = 0
+  let indentLvlMin = 0
+  let indentLvlMax = 1
   for (let lineNum = 0; lineNum < lines.length; lineNum++) {
     let line = lines[lineNum]
     if (m.isInsideString) line = m.isInsideString + line
@@ -31,14 +33,19 @@ function prettify(input, startInsideString = null) {
       }
     }
 
-    if (!m.indent) m.indent = tokens[0]
-    if (m.indent.includes("\t")) m.indent = "\t"
-    if (m.indent) m.tabSize = spaceSize(m.indent)
-    if (m.tabSize) indentLvl = Math.ceil(spaceSize(tokens[0]) / m.tabSize)
     let thisIndent = ""
-    for (let i = 0; i < indentLvl; i++) {
-      thisIndent += m.indent
+    if (tokens.length > 1) {
+      if (!m.indent) m.indent = tokens[0]
+      if (m.indent.includes("\t")) m.indent = "\t"
+      if (m.indent) m.tabSize = spaceSize(m.indent)
+      if (m.tabSize) indentLvl = Math.min(Math.max(indentLvlMin, Math.ceil(spaceSize(tokens[0]) / m.tabSize)), indentLvlMax)
+      for (let i = 0; i < indentLvl; i++) {
+        thisIndent += m.indent
+      }
     }
+    indentLvlMin = 0
+    indentLvlMax = indentLvl + 2
+
 
     tokens.shift()
     let newLine = (thisIndent + tokens.join("")).trimEnd()
@@ -48,8 +55,13 @@ function prettify(input, startInsideString = null) {
     lastLineWasBlank = !tokens.length
 
     let lastToken = tokens.pop()?.trim()
+    while (lastToken?.slice(0, 1) === "#") lastToken = tokens.pop()?.trim()
     let quot = isString(lastToken)
-    if (quot && lastToken.slice(quot.length).slice(-quot.length) !== quot) m.isInsideString = quot
+    if (quot && lastToken.slice(quot.length).slice(-quot.length) !== quot) {
+      m.isInsideString = quot
+    } else {
+      if (lastToken === ":") indentLvlMin = indentLvlMax = indentLvl + 1
+    }
   }
   return output.trimEnd()
 }

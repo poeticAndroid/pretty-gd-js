@@ -137,11 +137,11 @@ for i in range(10):
 
 # ::
 
-for i in range(10):
-	print("hello")
+	# for i in range(10):
+	#   print("hello")
 
-for i in range(10):
-		print("hello")
+	# for i in range(10):
+	# 		print("hello")
 
 # Use 2 indent levels to distinguish continuation lines from
 # regular code blocks.
