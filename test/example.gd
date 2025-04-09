@@ -21,7 +21,7 @@ var inferred_type := "String"
 var wrong = (not(true))
 
 # Constants.
-const ANSWER = 42
+const ANSWER = +42
 const THE_NAME = "Charly"
 
 # Enums.

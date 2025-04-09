@@ -30,7 +30,7 @@ function tokenize(_input) {
       tokenType = "name"
     } else if (char.match(/[\&\$\%\^]/) && input.charAt(pos + 1).trim()) {
       token = readNode()
-    } else if (char.match(/[\-\!]/) && input.charAt(pos + 1).match(/[0-9a-z_]/i)) {
+    } else if (char.match(/[\+\-\!]/) && input.charAt(pos + 1).match(/[0-9a-z_]/i)) {
       pos++
       let lastTokenChar = tokens[tokens.length - 1].trim().slice(-1)
       if (lastTokenChar.match(/[\"\'\)\}\]]/i) || ["number", "name"].includes(lastTokenType)) {
