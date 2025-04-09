@@ -78,7 +78,8 @@ let indent
 
 function prettifyFile(filename, newerThan = 0) {
   // debugCall("prettifyFile", ...arguments)
-  let stat = fs.statSync(filename)
+  let stat = statSafe(filename)
+  if (!stat) return
   if (stat.mtimeMs <= newerThan) return
   if (autoDetect) pretty.indent = null
   let input = ("" + fs.readFileSync(filename)).replaceAll("\r", "")
