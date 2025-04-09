@@ -11,8 +11,8 @@ A formatter for GDScript that just works!
 ```
 $ npm install -g pretty-gd-js
 
-$ pretty.gd --help
-Usage: pretty.gd [options] [path] [files...]
+$ pretty-gd --help
+Usage: pretty-gd [options] [path] [files...]
 
 Options:
   -s, --spaces <size>  enforce (or, if -t is also set, convert from) space-based indentation
@@ -32,18 +32,18 @@ From the terminal/command line, type the following:
 ```
 $ cd path/to/godot/project/
 
-$ pretty.gd -w
+$ pretty-gd -w
 Watching ./ for changes...
 ```
 
-The  `-w/--watch` option alone will not check already existing files, but only those that get modified _while_ `pretty.gd -w` is running.
-You can add `-d/--dir` to also check existing files, like this: `pretty.gd -d -w`
+The  `-w/--watch` option alone will not check already existing files, but only those that get modified _while_ `pretty-gd -w` is running.
+You can add `-d/--dir` to also check existing files, like this: `pretty-gd -d -w`
 
 To disable the annoying "Files have been modified outside Godot" dialog box, go to the following setting and enable it:
 
 `Editor -> Editor Settings -> Text Editor -> Behavior -> Auto Reload Scripts on External Change`
 
-Note that when `pretty.gd` modifies a file, the changes doesn't show up in Godot editor right away. External changes are only detected when the Godot window changes focus.
+Note that when `pretty-gd` modifies a file, the changes doesn't show up in Godot editor right away. External changes are only detected when the Godot window changes focus.
 
 ### JavaScript API
 
@@ -77,12 +77,18 @@ fs.writeFileSync(file, output + "\n")
 
 ## Known Issues
 
- - The Godot editor only checks for file changes when the window changes from unfocused to focused. So if you're running `pretty.gd -w` in the background, and it prettifies a script you just saved, you won't see the prettified script until you tab out and back into the editor.
- - It seems Godot editor only checks the file timestamp down to the second (at least on some systems), meaning if Godot editor saves a file that then gets changed and resaved externally within the same second, Godot editor doesn't detect it as a change. Hence why `pretty.gd -w` will wait one second before resaving the file.
+ - The Godot editor only checks for file changes when the window changes from unfocused to focused. So if you're running `pretty-gd -w` in the background, and it prettifies a script you just saved, you won't see the prettified script until you tab out and back into the editor.
+ - It seems Godot editor only checks the file timestamp down to the second (at least on some systems), meaning if Godot editor saves a file that then gets changed and resaved externally within the same second, Godot editor doesn't detect it as a change. Hence why `pretty-gd -w` will wait one second before resaving the file.
 
 If you come across any other issues with using this software, please [let me know](https://github.com/poeticAndroid/pretty-gd-js/issues).
 
 ## Release Notes
+
+### 1.18.0
+
+ - Making sure that lines ending with a `:` is followed by a properly indented line.
+ - Positive numbers/values can now be signed with a `+`.
+ - Command line tool renamed to `pretty-gd`. (`pretty.gd` still included as an alias.)
 
 ### 1.17.0
 
