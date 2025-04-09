@@ -1,12 +1,12 @@
 {
   "name": "pretty-gd-js",
-  "version": "1.17.0",
+  "version": "1.18.0",
   "description": "A library that makes GDScript code look pretty.",
   "type": "module",
   "main": "index.js",
   "bin": {
-    "pretty.gd": "bin.js",
-    "pretty-gd": "bin.js"
+    "pretty-gd": "bin.js",
+    "pretty.gd": "bin.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
