@@ -28,6 +28,13 @@ const THE_NAME = "Charly"
 enum { UNIT_NEUTRAL, UNIT_ENEMY, UNIT_ALLY }
 enum Named { THING_1, THING_2, ANOTHER_THING = -1 }
 
+enum Direction {
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+}
+
 # Built-in vector types.
 var v2 = Vector2(1, 2)
 var v3 = Vector3(1, 2, 3)
