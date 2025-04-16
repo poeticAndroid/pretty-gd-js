@@ -84,6 +84,10 @@ If you come across any other issues with using this software, please [let me kno
 
 ## Release Notes
 
+### 1.18.1
+
+ - Another bugfix of handling of multiline strings. 🤞
+
 ### 1.18.0
 
  - Making sure that lines ending with a `:` is followed by a properly indented line.

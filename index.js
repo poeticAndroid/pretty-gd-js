@@ -20,7 +20,6 @@ function prettify(input, startInsideString = null) {
     let line = lines[lineNum]
     if (m.isInsideString) line = m.isInsideString + line
     let tokens = tokenize(line)
-    // console.log(lineNum, m.isInsideString, tokens)
     if (m.isInsideString) {
       tokens[1] = tokens[1]?.trim().slice(m.isInsideString.length)
       if (tokens[1]?.slice(-m.isInsideString.length) !== m.isInsideString) {
@@ -29,7 +28,7 @@ function prettify(input, startInsideString = null) {
       } else {
         output += tokens[1]
         tokens[1] = ""
-        m.isInsideString == null
+        m.isInsideString = null
       }
     }
 
