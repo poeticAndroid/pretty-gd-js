@@ -1,9 +1,9 @@
 {
   "name": "pretty-gd-js",
-  "version": "1.18.4",
+  "version": "2.0.0",
   "description": "A library that makes GDScript code look pretty.",
   "type": "module",
-  "main": "index.js",
+  "main": "pretty-gd.js",
   "bin": {
     "pretty-gd": "bin.js",
     "pretty.gd": "bin.js"

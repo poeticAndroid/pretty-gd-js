@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 
 import fs from "node:fs"
-import pretty from "./index.js"
+import Prettifier from "./pretty-gd.js"
 import { Command } from "commander"
-import pck from "./package.json" with {type: "json"}
+import pck from "./package.json" assert {type: "json"}
 
+const prettifier = new Prettifier()
 const program = new Command(binName())
 program
   .option("-s, --spaces <size>", "enforce (or, if -t is also set, convert from) space-based indentation")
   .option("-t, --tabs", "enforce tab-based indentation")
-  .option("-a, --auto", "auto-detect indentation on each file separately")
+  //.option("-a, --auto", "auto-detect indentation on each file separately")
   .option("-p, --stdio", "read from stdin and write it prettified to stdout")
   .option("-d, --dir", "prettify all *.gd files in [path]")
   .option("-w, --watch", "automatically prettify any modified *.gd files in [path]")
@@ -21,18 +22,18 @@ function init() {
   let opts = program.opts()
   let path
   if (opts.spaces) {
-    pretty.indent = ""
-    pretty.tabSize = opts.spaces == true ? 4 : opts.spaces
-    for (let i = 0; i < pretty.tabSize; i++) {
-      pretty.indent += " "
+    prettifier.indent_str = ""
+    prettifier.tab_size = opts.spaces == true ? 4 : opts.spaces
+    for (let i = 0; i < prettifier.tab_size; i++) {
+      prettifier.indent_str += " "
     }
   }
   if (opts.tabs) {
-    pretty.indent = "\t"
+    prettifier.indent_str = "\t"
   }
-  if (opts.auto) {
-    autoDetect = true
-  }
+  //if (opts.auto) {
+  //  autoDetect = true
+  //}
 
   if (opts.stdio) {
     let input = ""
@@ -43,8 +44,8 @@ function init() {
       } while (chunk = process.stdin.read())
     })
     process.stdin.on("end", e => {
-      process.stdout.write(pretty.prettify(input))
-      process.stdout.write(pretty.eol || "\n")
+      process.stdout.write(prettifier.prettify(input))
+      process.stdout.write("\n")
     })
     return
   }
@@ -73,7 +74,7 @@ function init() {
 }
 
 let newestTime = 0
-let autoDetect
+//let autoDetect
 let indent
 
 function prettifyFile(filename, newerThan = 0) {
@@ -81,9 +82,9 @@ function prettifyFile(filename, newerThan = 0) {
   let stat = statSafe(filename)
   if (!stat) return
   if (stat.mtimeMs <= newerThan) return
-  if (autoDetect) pretty.indent = null
+  //if (autoDetect) prettifier.indent_str = null
   let input = ("" + fs.readFileSync(filename)).replaceAll("\r", "")
-  let output = pretty.prettify(input) + "\n"
+  let output = prettifier.prettify(input) + "\n"
   if (indent != getIndentSettings()) {
     indent = getIndentSettings()
     console.log("Indentation set to", indent)
@@ -172,9 +173,9 @@ function binName() {
 }
 
 function getIndentSettings() {
-  if (!pretty.indent) return `auto-detect`
-  if (pretty.indent == "\t") return `tabs(${pretty.tabSize})`
-  if (pretty.indent.charAt(0) == " ") return `spaces(${pretty.tabSize})`
+  if (!prettifier.indent_str) return `auto-detect`
+  if (prettifier.indent_str == "\t") return `tabs(${prettifier.tab_size})`
+  if (prettifier.indent_str.charAt(0) == " ") return `spaces(${prettifier.tab_size})`
   return `unknown`
 }
 

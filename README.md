@@ -17,7 +17,6 @@ Usage: pretty-gd [options] [path] [files...]
 Options:
   -s, --spaces <size>  enforce (or, if -t is also set, convert from) space-based indentation
   -t, --tabs           enforce tab-based indentation
-  -a, --auto           auto-detect indentation on each file separately
   -p, --stdio          read from stdin and write it prettified to stdout
   -d, --dir            prettify all *.gd files in [path]
   -w, --watch          automatically prettify any modified *.gd files in [path]
@@ -47,32 +46,21 @@ Note that when `pretty-gd` modifies a file, the changes doesn't show up in Godot
 
 ### JavaScript API
 
-  - `prettify(input: string, startInsideString: string = null): string`
-    - `input: string` // The string of GDScript to make pretty.
-    - `startInsideString: string` // If set to a string delimiter, assume `input` is starting inside a string. Default is `null`.
-  - `isInsideString: string` // If last operation ended inside a string, this will be set to the type of quotes(string delimiter) of the string. Otherwise `null`.
-  - `indent: string` // Indentation string. Default is `null` for auto-detect.
-  - `tabSize: number` // Tab size. This will be overwritten if `indent` is set or detected to be space-based. Default is `4`.
-
-To parse a document line by line, remember to feed `isInsideString` back into the `prettify()` call as the second parameter.
-
-Keep in mind that `indent` and `tabSize` will be preserved between calls to `prettify()`.
-If you want to auto-detect for each call, remember to reset these properties to `null`.
-
 #### Example
 
 ```js
 import fs from "node:fs"
-import pretty from "pretty-gd-js"
+import Prettifier from "pretty-gd-js"
+const prettifier = new Prettifier()
 
 // configure indentation
-pretty.indent = "\t"
-pretty.tabSize = 4
+prettifier.indent_str = "\t"
+prettifier.tab_size = 4
 
-let file = "my_script.gd"
-let input = fs.readFileSync(file)
-let output = pretty.prettify(input) // <- This is the main function
-fs.writeFileSync(file, output + "\n")
+let filename = "my_script.gd"
+let input = fs.readFileSync(filename)
+let output = prettifier.prettify(input) // <- This is the main function
+fs.writeFileSync(filename, output + "\n")
 ```
 
 ## Known Issues
