@@ -103,7 +103,7 @@ function prettifyFile(filename, newerThan = 0) {
     }
 
     // if (input.trim() != output.trim()) 
-    console.log(stat?.mtime.toLocaleString(), filename, "pretty!")
+    console.log(stat?.mtime.toLocaleString(), filename, "🎀")
 
     stat = statSafe(filename)
     if (newerThan > true) setTimeout(e => {
