@@ -227,6 +227,19 @@ export default class Prettifier {
         return this.pos >= this.input._gdscript_length()
     }
 
+    is_keyword(token) {
+        return keywords._gdscript_has(token)
+    }
+    is_identifier(token) {
+        if (!token.trim()) return false
+        if (keywords._gdscript_has(token)) return false
+        if (number._gdscript_containsn(token._gdscript_substr(0, 1))) return false
+        for (let char of token) {
+            if (!identifier._gdscript_containsn(char)) return false
+        }
+        return true
+    }
+
     between(token0, token1, token2) {
         if (!token1) return ""
         if (!token2) return ""
@@ -306,6 +319,14 @@ const nodepath = "%/" + identifier
 
 // GDscript API
 
+function print(...params) {
+    console.log(...params)
+}
+
+function assert(condition, message = "") {
+    if (!condition) throw new Error("Assertion failed" + message ? (": " + message) : ("."))
+}
+
 function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max)
 }
@@ -369,7 +390,7 @@ func(String, 'length', function () {
 })
 
 func(Array, 'pop_front', function () {
-    this.shift()
+    return this.shift()
 })
 
 func(Array, 'push_back', function (value) {
