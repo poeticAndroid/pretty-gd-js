@@ -4,11 +4,11 @@ const prettifier = new Prettifier()
 
 
 function init() {
-    //let gd = fs.readFileSync("../../godot/pretty-gd/addons/pretty-gd/pretty.gd")
-    let gd = fs.readFileSync("../../godot/pretty-gd/test/api_test.gd")
+    let gd = fs.readFileSync("../../godot/pretty-gd/addons/pretty-gd/pretty.gd")
+    //let gd = fs.readFileSync("../../godot/pretty-gd/test/api_test.gd")
     let js = transpile(gd)
-    //fs.writeFileSync("pretty-gd.js", js.trim() + "\n")
-    fs.writeFileSync("api_test.js", js.trim() + "\n")
+    fs.writeFileSync("pretty-gd.js", js.trim() + "\n")
+    //fs.writeFileSync("test/api_test.js", js.trim() + "\n")
 }
 
 function transpile(gd) {
@@ -63,8 +63,11 @@ function transpile(gd) {
             token = "class_name"
             in_class++
         }
-        if (token == "var" && in_class == 2) token = ""
-        if (token == "const" && in_class == 2) token = ""
+        if ((token == "const" || token == "var") && indent_level == 0) {
+            token = prettifier.read_token()
+            locals = []
+            in_func = 3.5
+        }
         if (token == "func") {
             locals = []
             in_func = 1
@@ -75,9 +78,12 @@ function transpile(gd) {
             locals.push(token)
             in_func = 2.5
         }
+        if (prettifier.is_identifier(token) && in_func == 2.5) {
+            if (!(AllGlobals.includes(token) || locals.includes(token))) token = "this." + token
+        }
         if (token == "," && in_func == 2.5) in_func = 2
         if (token == ")" && in_func >= 2 && in_func < 3) in_func = 3
-        if ((token == "const" || token == "var" || token == "for") && in_func == 3) in_func = 3.5
+        if ((token == "const" || token == "var" || token == "for") && in_func == 3 && indent_level) in_func = 3.5
         if (prettifier.is_identifier(token)) {
             if (in_func == 3 && !(AllGlobals.includes(token) || locals.includes(token))) token = "this." + token
             if (in_func == 3.5) {
@@ -148,7 +154,7 @@ const blocks = ["if", "elif", "while", "for", "match"]
 const Types = [
     "bool", "int", "float", "String", "Array", "Object",
     "false", "true", "null", "self",
-    "JSON"
+    "JSON", "not"
 ]
 
 const GlobalScope = [

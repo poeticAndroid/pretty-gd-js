@@ -16,6 +16,10 @@ function int(from) {
     return parseInt(from)
 }
 
+function float(from) {
+    return parseFloat(from)
+}
+
 function str(...args) {
     return args.join("")
 }
