@@ -3,7 +3,7 @@
 import fs from "node:fs"
 import Prettifier from "./pretty-gd.js"
 import { Command } from "commander"
-import pck from "./package.json" assert {type: "json"}
+import pck from "./package.json" with {type: "json"}
 
 const prettifier = new Prettifier()
 const program = new Command(binName())
