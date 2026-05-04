@@ -72,6 +72,10 @@ If you come across any other issues with using this software, please [let me kno
 
 ## Release Notes
 
+### 2.0.5
+
+ - Now using the godot version of `pretty.gd` transpiled from GDscript to JavaScript.
+
 ### 1.18.1
 
  - Another bugfix of handling of multiline strings. 🤞
