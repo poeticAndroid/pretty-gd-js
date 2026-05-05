@@ -24,7 +24,7 @@ export default class Prettifier {
                 max_indent = ceil(this.space_size(line) / this.tab_size) + 2
                 output += line + "\n"
                 if (this.last_token === ":") {
-                    max_indent += - 1
+                    max_indent += -1
                     min_indent = max_indent
                 }
             }

@@ -4,11 +4,11 @@ const prettifier = new Prettifier()
 
 
 function init() {
-    //let gd = fs.readFileSync("../../godot/pretty-gd/addons/pretty-gd/pretty.gd")
-    let gd = fs.readFileSync("../../godot/pretty-gd/test/api_test.gd")
+    let gd = fs.readFileSync("../../godot/pretty-gd/addons/pretty-gd/pretty.gd")
+    //let gd = fs.readFileSync("../../godot/pretty-gd/test/api_test.gd")
     let js = transpile(gd)
-    //fs.writeFileSync("pretty-gd.js", js.trim() + "\n")
-    fs.writeFileSync("test/api_test.js", js.trim() + "\n")
+    fs.writeFileSync("pretty-gd.js", js.trim() + "\n")
+    //fs.writeFileSync("test/api_test.js", js.trim() + "\n")
 }
 
 function transpile(gd) {
@@ -115,7 +115,7 @@ function transpile(gd) {
 
         if (map[token]) token = map[token]
 
-        js += token + " "
+        js += token + (token == "-" ? "" : " ")
     }
     if (in_class > 1) {
         js += "}"
