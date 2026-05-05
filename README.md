@@ -74,7 +74,7 @@ If you come across any other issues with using this software, please [let me kno
 
 ### 2.0.5
 
- - Now using the [Godot version of `pretty.gd`](https://github.com/poeticAndroid/pretty-gd/blob/main/addons/pretty-gd/pretty.gd) transpiled from GDscript to JavaScript.
+ - Now using the [Godot version](https://github.com/poeticAndroid/pretty-gd/blob/main/README.md) of [`pretty.gd`](https://github.com/poeticAndroid/pretty-gd/blob/main/addons/pretty-gd/pretty.gd) transpiled from GDscript to JavaScript.
 
 ### 1.18.1
 
